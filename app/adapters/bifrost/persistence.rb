@@ -18,5 +18,13 @@ module Bifrost
       super(*args, **kwargs, &block)
     end
 
+    def method_missing(msg, *args, &block)
+      if persistor.present? and persistor.respond_to?(msg)
+        persistor.send(msg, *args, &block)
+      else
+        super
+      end
+    end
+
   end
 end
