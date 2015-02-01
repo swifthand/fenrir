@@ -19,5 +19,11 @@ module Fenrir
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+
+    autoloadable_lib_subdirs = %w[adapters validators entities]
+    autoloadable_lib_subdirs.each do |subdir|
+      config.autoload_paths += ["#{config.root}/app/#{subdir}"]
+    end
+
   end
 end
