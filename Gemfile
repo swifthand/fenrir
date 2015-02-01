@@ -25,6 +25,7 @@ end
 
 group :development, :staging, :test do
   gem 'ansi' # Color for turn tests.
+  gem 'minitest-reporters'
 end
 
 group :production, :staging do

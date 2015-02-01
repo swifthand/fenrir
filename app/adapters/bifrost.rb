@@ -4,7 +4,7 @@ module Bifrost
     mod = Module.new
     builder = EntityBuilder.new(share: share, **options)
     mod.instance_variable_set('@bifrost_enytity_builder', builder)
-    if options.fetch(:persistence_helpers, false)
+    unless options.fetch(:persistence_helpers, false)
       mod.instance_exec { include Bifrost::Persistence }
     end
 
@@ -35,8 +35,10 @@ module Bifrost
       descendent.class_exec { include ActiveModel::Validations      }
       descendent.class_exec { extend  ActiveModel::Naming           }
       descendent.class_exec { include ActiveModel::Conversion       }
+      descendent.class_exec { extend Bifrost::SharedBehaviorHelpers }
       descendent.send(:include, Virtus.model(virtus_options))
       build_shared_behavior(descendent)
+      assign_timestamp_attributes(descendent)
     end
 
 
@@ -58,7 +60,6 @@ module Bifrost
           # Clean up after ourselves, at the cost of trouncing
           # SharedBehavior::method_missing (i.e. singleton-class-level)
           class_macro_buffer.each do |call_details|
-            puts "Forwarding recorded '#{call_details[:message]}' to #{descendent.method(call_details[:message]).owner}"
             descendent.send(call_details[:message], *call_details[:args], &call_details[:block])
           end
         end
@@ -71,6 +72,11 @@ module Bifrost
           end
         end
       end
+    end
+
+    def assign_timestamp_attributes(descendent)
+      descendent.send(:attribute, 'created_at', DateTime)
+      descendent.send(:attribute, 'updated_at', DateTime)
     end
 
   end

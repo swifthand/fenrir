@@ -1,16 +1,18 @@
 development:
-  adapter: postgresql
+  adapter:  postgresql
   encoding: unicode
   database: fenrir_dev
-  pool: 5
+  pool:     5
   username: fenrirdev
   password: rainbowsinmywine
+  host:     localhost
 
-development:
-  adapter: postgresql
+test:
+  adapter:  postgresql
   encoding: unicode
   database: fenrir_test
-  pool: 5
+  pool:     5
   username: fenrirdev
   password: rainbowsinmywine
+  host:     localhost
 

@@ -1,6 +1,10 @@
 module Bifrost
   module Persistence
 
+    def self.included(descendant)
+      descendant.send(:attr_accessor, :persistor)
+    end
+
     def persist(*args, &block)
       persistor.persist(self, *args, &block)
     end
@@ -10,7 +14,7 @@ module Bifrost
     end
 
     def initialize(*args, persistor: NullPersistor.new, **kwargs, &block)
-      @persistor = persistor
+      self.persistor = persistor
       super(*args, **kwargs, &block)
     end
 
