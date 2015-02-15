@@ -7,6 +7,6 @@ class Institution
   attribute :state,           String
   attribute :postalcode,      String
   attribute :country,         String, default: 'US'
-  # attribute :leads,           Array['Lead'], default: []
+  attribute :leads,           Array['Lead'], default: []
 
 end

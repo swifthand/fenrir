@@ -25,5 +25,12 @@ module Fenrir
       config.autoload_paths += ["#{config.root}/app/#{subdir}"]
     end
 
+    config.after_initialize do
+      Dir[File.join(Rails.root, 'app/entities/*.rb')].each do |path|
+        require path
+      end
+      Virtus.finalize
+    end
+
   end
 end

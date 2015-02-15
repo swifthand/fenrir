@@ -3,17 +3,18 @@ module Bifrost
 
     def self.included(descendant)
       descendant.send(:extend, ClassMethods)
-      if descendant.name =~ /record$/
-        descendant.table_name = descendant.name.demodulize.underscore.chomp('_record').pluralize
+      desc_name = descendant.name.demodulize.underscore
+      if desc_name =~ /record$/
+        descendant.table_name = desc_name.chomp('_record').pluralize
       end
     end
 
 
     def as_entity(rebuild: false)
       if rebuild
-        @as_enitity   = User.new(**self.attributes.symbolize_keys, persistor: self)
+        @as_enitity   = self.class.entity_class.new(**self.attributes.symbolize_keys, persistor: self)
       else
-        @as_entity  ||= User.new(**self.attributes.symbolize_keys, persistor: self)
+        @as_entity  ||= self.class.entity_class.new(**self.attributes.symbolize_keys, persistor: self)
       end
     end
 
@@ -31,6 +32,10 @@ module Bifrost
 
 
     module ClassMethods
+
+      def entity_class
+        @record_for
+      end
 
       def persists_for(entity_class)
         @record_for = entity_class

@@ -1,11 +1,13 @@
 class User
-  include Bifrost.entity
+  include Bifrost.entity(finalize: false)
 
-  attribute :first_name,  String
-  attribute :last_name,   String
-  attribute :email,       String
-  attribute :admin,       Boolean, default: false
-  attribute :active,      Boolean, default: true
+  attribute :first_name,      String
+  attribute :last_name,       String
+  attribute :email,           String
+  attribute :admin,           Boolean, default: false
+  attribute :active,          Boolean, default: true
+  attribute :assigned_leads,  Array['Lead'], default: []
+  attribute :contacts,        Array['Contact'], default: []
 
   share_behavior do
     validates :first_name,    presence: true

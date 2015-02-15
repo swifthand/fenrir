@@ -35,8 +35,8 @@ module Bifrost
       descendent.class_exec { include ActiveModel::Validations      }
       descendent.class_exec { extend  ActiveModel::Naming           }
       descendent.class_exec { include ActiveModel::Conversion       }
-      descendent.class_exec { extend Bifrost::SharedBehaviorHelpers }
       descendent.send(:include, Virtus.model(virtus_options))
+      descendent.class_exec { extend Bifrost::SharedBehaviorHelpers }
       build_shared_behavior(descendent)
       assign_timestamp_attributes(descendent)
     end

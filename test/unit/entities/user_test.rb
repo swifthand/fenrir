@@ -53,5 +53,4 @@ class UserTest < ActiveSupport::TestCase
     refute(u.valid?)
   end
 
-
 end
