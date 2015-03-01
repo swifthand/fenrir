@@ -2,8 +2,8 @@ module Bifrost
   class HashPersistor
 
     def initialize(via: :id)
-      @identity_msg = via
-      @storage      = HashWithIndifferentAccess.new
+      @identity_msg       = via
+      @storage            = HashWithIndifferentAccess.new
     end
 
 
@@ -14,8 +14,13 @@ module Bifrost
       true
     end
 
+
     alias_method :persist!, :persist
 
+
+    def reciprocate_attributes(entity)
+      entity.id = entity.object_id
+    end
 
 ## Repository Methods ##########################################################
 

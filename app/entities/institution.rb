@@ -1,6 +1,7 @@
 class Institution
   include Bifrost.entity(finalize: false)
 
+  attribute :id,              Integer
   attribute :name,            String
   attribute :street_address,  String
   attribute :city,            String

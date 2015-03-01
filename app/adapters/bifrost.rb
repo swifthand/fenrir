@@ -4,9 +4,6 @@ module Bifrost
     mod = Module.new
     builder = EntityBuilder.new(share: share, **options)
     mod.instance_variable_set('@bifrost_enytity_builder', builder)
-    unless options.fetch(:persistence_helpers, false)
-      mod.instance_exec { include Bifrost::Persistence }
-    end
 
     mod.instance_exec do
       def self.included(descendent)
@@ -19,11 +16,12 @@ module Bifrost
 
   class EntityBuilder
 
-    attr_reader :virtus_options, :shared_behavior_name
+    attr_reader :virtus_options, :shared_behavior_name, :persistence_helpers
 
     def initialize(share: , **options)
       @virtus_options       = options.slice(*virtus_option_keys)
       @shared_behavior_name = share
+      @persistence_helpers  = options.fetch(:persistence_helpers, true)
     end
 
     def virtus_option_keys
@@ -39,6 +37,9 @@ module Bifrost
       descendent.class_exec { extend Bifrost::SharedBehaviorHelpers }
       build_shared_behavior(descendent)
       assign_timestamp_attributes(descendent)
+      if persistence_helpers
+        descendent.class_exec { include Bifrost::Persistence }
+      end
     end
 
 

@@ -10,5 +10,10 @@ module Bifrost
       true
     end
 
+
+    def reciprocate_attributes(entity)
+      []
+    end
+
   end
 end

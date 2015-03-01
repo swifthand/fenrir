@@ -20,14 +20,38 @@ module Bifrost
 
 
     def persist(entity, *args, &block)
-      self.attributes = entity.attributes
+      self.attributes = strip_unpersisted_attributes(entity.attributes)
       self.save
     end
 
 
     def persist!(entity, *args, &block)
-      self.attributes = entity.attributes
+      self.attributes = strip_unpersisted_attributes(entity.attributes)
       self.save!
+    end
+
+
+    def persistable_attributes
+      self.class.columns.map(&:name)
+    end
+
+
+    def strip_unpersisted_attributes(attr_set)
+      attr_set.select do |attr_name, _|
+        persistable_attributes.include?(attr_name.to_s)
+      end
+    end
+
+
+    def reciprocate_attributes(entity)
+      self.reciprocated_attributes.each do |attr_name|
+        entity.send("#{attr_name}=", self.send(attr_name))
+      end
+    end
+
+
+    def reciprocated_attributes
+      self.class.reciprocated_attributes
     end
 
 
@@ -46,6 +70,10 @@ module Bifrost
         end
       end
       alias_method :record_for, :persists_for
+
+      def reciprocated_attributes
+        @reciprocated_attributes ||= [:id]
+      end
 
     end
 
