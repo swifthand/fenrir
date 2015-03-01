@@ -10,7 +10,9 @@ module Bifrost
 ## Persistor Methods ##########################################################
 
     def persist(entity)
+      entity.send("#{identity_msg}=", entity.object_id)
       storage[entity.send(identity_msg)] = entity
+      reciprocate_attributes(entity)
       true
     end
 

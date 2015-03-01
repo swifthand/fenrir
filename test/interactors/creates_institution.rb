@@ -3,7 +3,7 @@ require 'test_helper'
 class CreatesInstitutionTest < ActiveSupport::TestCase
 
   def hash_persistor
-    @hash_persistor ||= Bifrost::HashPersistor.new(via: :object_id)
+    @hash_persistor ||= Bifrost::HashPersistor.new
   end
 
   def valid_institution(overrides = {})

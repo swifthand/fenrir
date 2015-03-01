@@ -22,12 +22,14 @@ module Bifrost
     def persist(entity, *args, &block)
       self.attributes = strip_unpersisted_attributes(entity.attributes)
       self.save
+      self.reciprocate_attributes(entity)
     end
 
 
     def persist!(entity, *args, &block)
       self.attributes = strip_unpersisted_attributes(entity.attributes)
       self.save!
+      self.reciprocate_attributes(entity)
     end
 
 

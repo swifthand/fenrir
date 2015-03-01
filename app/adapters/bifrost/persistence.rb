@@ -6,15 +6,11 @@ module Bifrost
     end
 
     def persist(*args, &block)
-      result = persistor.persist(self, *args, &block)
-      persistor.reciprocate_attributes(self)
-      result
+      persistor.persist(self, *args, &block)
     end
 
     def persist!(*args, &block)
-      result = persistor.persist!(self, *args, &block)
-      persistor.reciprocate_attributes(self)
-      result
+      persistor.persist!(self, *args, &block)
     end
 
     def initialize(*args, persistor: NullPersistor.new, **kwargs, &block)
